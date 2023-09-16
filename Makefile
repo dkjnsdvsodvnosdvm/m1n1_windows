@@ -73,6 +73,13 @@ LIBFDT_OBJECTS := $(patsubst %,libfdt/%, \
 	fdt_addresses.o fdt_empty_tree.o fdt_ro.o fdt_rw.o fdt_strerror.o fdt_sw.o \
 	fdt_wip.o fdt.o)
 
+DCP_OBJECTS := $(patsubst %,dcp/%, \
+	dpav_ep.o \
+	dptx_phy.o \
+	dptx_port_ep.o \
+	parser.o \
+	system_ep.o)
+
 OBJECTS := \
 	adt.o \
 	afk.o \
@@ -117,6 +124,7 @@ OBJECTS := \
 	sart.o \
 	sep.o \
 	sio.o \
+	smc.o \
 	smp.o \
 	start.o \
 	startup.o \
@@ -129,6 +137,7 @@ OBJECTS := \
 	utils.o utils_asm.o \
 	vsprintf.o \
 	wdt.o \
+	$(DCP_OBJECTS) \
 	$(MINILZLIB_OBJECTS) $(TINF_OBJECTS) $(DLMALLOC_OBJECTS) $(LIBFDT_OBJECTS) $(RUST_LIBS)
 
 FP_OBJECTS := \
@@ -152,9 +161,9 @@ all: update_tag update_cfg build/$(TARGET) build/$(TARGET_RAW)
 clean:
 	rm -rf build/*
 format:
-	$(CLANG_FORMAT) -i src/*.c src/math/*.c src/*.h src/math/*.h sysinc/*.h
+	$(CLANG_FORMAT) -i src/*.c src/dcp/*.c src/math/*.c src/*.h src/dcp/*.h src/math/*.h sysinc/*.h
 format-check:
-	$(CLANG_FORMAT) --dry-run --Werror src/*.c src/*.h sysinc/*.h
+	$(CLANG_FORMAT) --dry-run --Werror src/*.c src/*.h src/dcp/*.c src/dcp/*.h sysinc/*.h
 rustfmt:
 	cd rust && cargo fmt
 rustfmt-check:
